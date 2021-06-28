@@ -1,0 +1,18 @@
+{
+    "name": "wechaty-doraemon",
+    "description": "a wechaty bot service",
+    "private": true,
+    "workspaces": [
+        "packages/*"
+    ],
+    "author": "young <young961203@gmail.com>",
+    "license": "MIT",
+    "dependencies": {
+        "@dianmi-fe/prettier-config": "^1.0.2",
+        "chalk": "^4.1.1",
+        "yorkie": "^2.0.0"
+    },
+    "gitHooks": {
+        "commit-msg": "node scripts/verify-commit.js"
+    }
+}
