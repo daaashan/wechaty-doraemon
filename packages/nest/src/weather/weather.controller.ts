@@ -1,6 +1,8 @@
 import { Controller, Get, HttpException, HttpStatus, Query } from '@nestjs/common'
+import { ApiTags } from '@nestjs/swagger'
 import { WeatherService } from './weather.service'
 
+@ApiTags('weather')
 @Controller('weather')
 export class WeatherController {
     constructor(private weatherService: WeatherService) {}
