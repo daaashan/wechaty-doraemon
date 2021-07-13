@@ -1,0 +1,20 @@
+version: '3'
+
+services:
+    nest:
+        build: ./packages/nest
+        ports:
+            - '10086:3000'
+
+    wechaty:
+        image: wechaty/wechaty
+        command: index.js
+        volumes:
+            - ./packages/wechaty:/bot
+
+networks:
+    default:
+        name: wechaty-doraemon
+
+volumes:
+    wechaty-doraemon_wechaty:
