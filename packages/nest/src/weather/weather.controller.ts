@@ -1,6 +1,8 @@
-import { Controller, Get, HttpException, HttpStatus, Query } from '@nestjs/common'
-import { ApiTags } from '@nestjs/swagger'
+import { Controller, Get, Query } from '@nestjs/common'
+import { ApiTags, ApiOperation, ApiQuery, ApiOkResponse } from '@nestjs/swagger'
 import { WeatherService } from './weather.service'
+
+import { Weather } from './entities/weather.entity'
 
 @ApiTags('weather')
 @Controller('weather')
@@ -8,14 +10,12 @@ export class WeatherController {
     constructor(private weatherService: WeatherService) {}
 
     @Get()
-    async get(@Query('city') city: string) {
-        return await this.weatherService.getWeather(city).catch(err => {
-            throw new HttpException(
-                {
-                    message: err.message
-                },
-                HttpStatus.INTERNAL_SERVER_ERROR
-            )
-        })
+    @ApiOperation({
+        summary: '获取国内天气信息'
+    })
+    @ApiQuery({ name: 'city', description: '城市', example: '北京' })
+    @ApiOkResponse({ type: Weather })
+    async get(@Query('city') city: string): Promise<Weather> {
+        return await this.weatherService.getWeather(city)
     }
 }
