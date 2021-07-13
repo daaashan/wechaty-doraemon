@@ -2,6 +2,8 @@ import { Controller, Get, Query } from '@nestjs/common'
 import { ApiTags, ApiOperation, ApiQuery, ApiOkResponse } from '@nestjs/swagger'
 import { WeatherService } from './weather.service'
 
+import { GetWeatherDto } from './dto/get-weather.dto'
+
 import { Weather } from './entities/weather.entity'
 
 @ApiTags('weather')
@@ -15,7 +17,7 @@ export class WeatherController {
     })
     @ApiQuery({ name: 'city', description: '城市', example: '北京' })
     @ApiOkResponse({ type: Weather })
-    async get(@Query('city') city: string): Promise<Weather> {
-        return await this.weatherService.getWeather(city)
+    async get(@Query() query: GetWeatherDto): Promise<Weather> {
+        return await this.weatherService.getWeather(query.city)
     }
 }
