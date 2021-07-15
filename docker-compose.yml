@@ -8,9 +8,9 @@ services:
 
     wechaty:
         image: wechaty/wechaty
-        command: index.js
+        command: index.ts
         volumes:
-            - ./packages/wechaty:/bot
+            - ./packages/wechaty-bot:/bot
 
 networks:
     default:

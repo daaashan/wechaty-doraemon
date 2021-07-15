@@ -1,26 +1,25 @@
-FROM node:14-alpine as builder
+FROM node:15.13.0-alpine3.13 AS builder
 
-ENV NODE_ENV build
-
-USER $user
 WORKDIR /home/node
 
-COPY . /home/node
+COPY *.json ./
 
-RUN yarn install --frozen-lockfile && yarn build
+RUN yarn
+
+COPY src src
+
+RUN yarn build
 
 # ---
 
-FROM node:14-alpine
+FROM node:15.13.0-alpine3.13
 
-ENV NODE_ENV production
-
-USER $user
 WORKDIR /home/node
 
-COPY --from=builder /home/node/package*.json /home/node/
-COPY --from=builder /home/node/dist/ /home/node/dist/
+COPY --from=builder /home/node/dist/package.json .
 
-RUN yarn install --frozen-lockfile
+RUN yarn --prod
+
+COPY --from=builder /home/node/dist dist
 
 CMD ["yarn", "start:prod"]
