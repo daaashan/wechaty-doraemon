@@ -10,7 +10,7 @@ interface DoraemonConfig {
 
 class Doraemon {
     props: Prop[] = []
-    config: DoraemonConfig = null
+    config: DoraemonConfig
     mentionBotName: string
 
     constructor(conf: DoraemonConfig) {
@@ -39,13 +39,8 @@ class Doraemon {
         this.props.push(prop)
     }
 
-    findProp(text: string): Prop {
-        const prop = this.props.find(({ keyword }) => {
-            if (typeof keyword === 'function') {
-                return keyword(text)
-            }
-            return keyword === text
-        })
+    findProp(text: string): undefined | Prop {
+        const prop = this.props.find(({ keyword }) => keyword(text))
         if (prop) log.info('doraemon', 'findProp: %s(%s)', prop.name, text)
         return prop
     }
@@ -67,7 +62,7 @@ interface PropConfig {
     /**
      * 匹配关键字
      * */
-    keyword: string | ((text: string) => string | boolean)
+    keyword: (text: string) => boolean
     /**
      * 触发方法
      * */

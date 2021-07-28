@@ -3,9 +3,8 @@ import { Prop } from '../doraemon'
 
 const weather = new Prop({
     name: '天气查询',
-    keyword(text): string | boolean {
-        if (!text.endsWith('天气')) return false
-        return text.replace('天气', '')
+    keyword(text) {
+        return text.endsWith('天气')
     },
     async trigger(msg, text) {
         try {
@@ -13,7 +12,7 @@ const weather = new Prop({
                 data: { location, now }
             } = await api.get('weather', {
                 params: {
-                    city: this.keyword(text)
+                    city: text.replace('天气', '')
                 }
             })
             await msg.say(`${location.city}：${now.text} ${now.feels_like}°C`)
