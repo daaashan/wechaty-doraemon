@@ -1,3 +1,4 @@
+import { log } from 'wechaty'
 import { api } from '../api'
 import { Prop } from '../doraemon'
 
@@ -8,21 +9,25 @@ const coin = new Prop({
     },
     async trigger(msg, text) {
         try {
-            const baseSymbol = text.replace('币', '').trim().toLocaleUpperCase()
+            const keyword = text.replace('币', '').trim().toLocaleUpperCase()
             const {
-                data: { data }
-            } = await api.get('https://api.coincap.io/v2/markets', {
+                data: { coin_info, markets }
+            } = await api.get('coin/feixiaohao', {
                 params: {
-                    baseSymbol,
-                    quoteSymbol: 'USDT',
-                    exchangeId: ['huobi', 'binance']
+                    keyword
                 }
             })
-            let str = `${baseSymbol}/USDT\n`
-            str += data.map((m: any) => `${Number(m.priceQuote)} - ${m.exchangeId}`).join('\n')
-            await msg.say(str)
+            if (markets.length) {
+                let res = `${coin_info.symbol}(${coin_info.coincode})/USDT\n`
+                res += markets.map((m: any) => `${m.price} - ${m.name}`).join('\n')
+                await msg.say(res)
+            } else {
+                await msg.say('没有查到相关信息呢～')
+            }
         } catch (error) {
-            await msg.say('服务不可用')
+            const errmsg = error.response.data.message
+            log.error(errmsg)
+            await msg.say(errmsg)
         }
     }
 })

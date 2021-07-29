@@ -6,7 +6,7 @@ import { Doraemon } from './doraemon'
 import { dingdong, weather, coin, medal, help } from './props'
 
 const doraemon = new Doraemon({
-    botName: 'bot'
+    botName: '哆啦A梦'
 })
 
 doraemon.addProp(dingdong)
