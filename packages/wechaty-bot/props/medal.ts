@@ -10,10 +10,12 @@ interface MEDALS_LIST {
     count: number
 }
 
+const keywords =  ['奖牌榜', '金牌榜', '奥运奖牌榜', '奥运金牌榜']
+
 const medal = new Prop({
     name: '东京奥运奖牌榜',
     keyword(text) {
-        return text === '奖牌榜'
+        return keywords.includes(text)
     },
     async trigger(msg) {
         try {

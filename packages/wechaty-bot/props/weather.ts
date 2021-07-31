@@ -8,11 +8,12 @@ const weather = new Prop({
     },
     async trigger(msg, text) {
         try {
+            if (text.trim() === '天气') return msg.say('天气查询\n例如发送：深圳天气')
             const {
                 data: { location, now }
             } = await api.get('weather', {
                 params: {
-                    city: text.replace('天气', '')
+                    city: text.trim().replace('天气', '')
                 }
             })
             await msg.say(`${location.city}：${now.text} ${now.feels_like}°C`)
