@@ -16,25 +16,34 @@ export class Market {
     price: number
 }
 
-export class FeixiaohaoMarketTicker {
-    /**
-     * 市场信息
-     */
-    markets: Market[]
-}
-
 export class FeixiaohaoCoinInfo {
+    /**
+     * 虚拟币 code
+     * @example bitcoin
+     */
     coincode: string
 
+    /**
+     * 虚拟币 name
+     * @example Bitcoin
+     */
     coinname: string
 
+    /**
+     * 虚拟币代号
+     * @example BTC
+     */
     symbol: string
 }
 
-export class FeixiaohaoCoinCode {
-    coinlist: FeixiaohaoCoinInfo[]
-}
-
-export class FeixiaohaoCoinMarketTicker extends FeixiaohaoMarketTicker {
+export class FeixiaohaoCoinMarketTicker {
+    /**
+     * 虚拟币基本信息
+     */
     coin_info: FeixiaohaoCoinInfo
+
+    /**
+     * 虚拟币市场信息
+     */
+    markets: Market[]
 }
