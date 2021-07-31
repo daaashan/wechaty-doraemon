@@ -3,6 +3,8 @@ import axios from 'axios'
 
 import { FeixiaohaoCoinInfo, FeixiaohaoCoinMarketTicker } from './entities/feixiaohao.entity'
 
+const exchangeCodes = ['huobipro', 'binance', 'okex', 'coinbasepro', 'mexc']
+
 const codeCache: Map<string, FeixiaohaoCoinInfo> = new Map()
 
 function setCodeCache(...args: [string, FeixiaohaoCoinInfo]) {
@@ -88,7 +90,12 @@ export class FeixiaohaoService {
             if (status !== 200) {
                 throw new Error(msg)
             }
-            return { coin_info, markets }
+            return {
+                coin_info,
+                markets: markets
+                    .filter(f => exchangeCodes.includes(f.exchange_code))
+                    .sort((m, n) => exchangeCodes.indexOf(m.exchange_code) - exchangeCodes.indexOf(n.exchange_code))
+            }
         } catch (error) {
             throw new InternalServerErrorException(error.message)
         }
